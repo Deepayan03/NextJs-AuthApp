@@ -1,16 +1,30 @@
 "use client"
 import React,{useState} from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import {axios} from "axios"
+import axios from "axios"
+import toast from "react-hot-toast";
 const Signup = () => {
+  const router = useRouter();
   const [userDetails , setUserDetails] = useState({
-    fullname:"",
+    userName : "",
     email:"",
     password:"",
     confirm_password:""
   });
+  const onSignUp=async()=>{
+    try {
+      const {userName , email ,password} = userDetails;
+      console.log(userDetails);
+      const response = await axios.post("/api/users/signup" , {userName , email , password});
+      console.log(response);
+      router.push("/login");
+      toast.success("Signup Successful...Please login");
+    } catch (error : any) {
+      console.log(error);
+      toast.error("Couldnt signup")
+    }
+  }
   const handleInputChange = (e : any)=>{
     const {name , value} = e.target;
     setUserDetails({
@@ -27,7 +41,7 @@ const Signup = () => {
             type="text"
             onChange={handleInputChange}
             className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="fullname"
+            name="userName"
             placeholder="Full Name"
           />
 
@@ -56,7 +70,8 @@ const Signup = () => {
 
           <button
             type="submit"
-            className="w-full text-center py-3 rounded bg-green text-white hover:bg-green-dark focus:outline-none my-1">
+            onClick={onSignUp}
+            className="w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-800 focus:outline-none my-1">
             Create Account
           </button>
 

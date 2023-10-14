@@ -1,25 +1,24 @@
-"use client"
+"use client";
 import Link from "next/link";
-import React , {useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 const LoginPage = () => {
-  const [userDetails , setUserDetails] = useState({
-    email:"",
-    password:"",
+  const [userDetails, setUserDetails] = useState<Object>({
+    email: "",
+    password: "",
   });
-  const handleInputChange = (e : any)=>{
-    const {name , value} = e.target;
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
     setUserDetails({
       ...userDetails,
-      [name] : value
+      [name]: value,
     });
-  }
+  };
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
       <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
         <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
           <h1 className="mb-8 text-3xl text-center">Log in</h1>
-          
 
           <input
             type="text"
@@ -60,7 +59,7 @@ const LoginPage = () => {
         </div>
 
         <div className="text-grey-dark mt-6">
-         {" Don't have an account?"}
+          {" Don't have an account?"}
           <Link href="/signUp">Register</Link>
         </div>
       </div>
