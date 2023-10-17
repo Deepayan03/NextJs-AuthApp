@@ -6,7 +6,14 @@ import axios from "axios"
 import toast from "react-hot-toast";
 const Signup = () => {
   const router = useRouter();
-  const [userDetails , setUserDetails] = useState({
+  interface User {
+    userName: string;
+    email: string;
+    password: string;
+    confirm_password: string;
+  }
+  
+  const [userDetails , setUserDetails] = useState<User>({
     userName : "",
     email:"",
     password:"",
@@ -14,9 +21,13 @@ const Signup = () => {
   });
   const onSignUp=async()=>{
     try {
-      const {userName , email ,password} = userDetails;
+      const {userName , email ,password , confirm_password} = userDetails;
       console.log(userDetails);
-      const response = await axios.post("/api/users/signup" , {userName , email , password});
+      if(password !== confirm_password){
+        toast.error("Passwords donot match");
+        return;
+      }
+      const response = await axios.post("/api/users/signup" , {userName , email , password , confirm_password});
       console.log(response);
       router.push("/login");
       toast.success("Signup Successful...Please login");
@@ -25,7 +36,7 @@ const Signup = () => {
       toast.error("Couldnt signup")
     }
   }
-  const handleInputChange = (e : any)=>{
+  const handleInputChange = (e : React.ChangeEvent<HTMLInputElement>)=>{
     const {name , value} = e.target;
     setUserDetails({
       ...userDetails,

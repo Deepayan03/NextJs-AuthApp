@@ -2,18 +2,41 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 const LoginPage = () => {
-  const [userDetails, setUserDetails] = useState<Object>({
+  const router = useRouter();
+  interface Users {
+    email : string;
+    password: string;
+  }
+  const [userDetails, setUserDetails] = useState<Users>({
     email: "",
     password: "",
   });
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setUserDetails({
       ...userDetails,
       [name]: value,
     });
   };
+  const handleLogin = async (e:any)=>{
+    // e.preventDefault();
+    const {email , password} = userDetails;
+    try {
+      if(!email || !password){
+        toast.error("All fields are mandatory");
+        return;
+      }
+      const res = await axios.post("/api/users/login",{email, password});
+      toast.success("User logged in successfully");
+      res && localStorage.setItem("userDetails",JSON.stringify(res.data.data));
+      router.push(`/profile/${res?.data?.data?._id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
       <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
@@ -38,6 +61,7 @@ const LoginPage = () => {
 
           <button
             type="submit"
+            onClick={handleLogin}
             className="w-full text-center py-3 rounded bg-green-400 text-white hover:bg-green-dark focus:outline-none my-1">
             Login
           </button>

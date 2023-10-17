@@ -1,10 +1,6 @@
+require("dotenv").config();
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {};
 
-module.exports = nextConfig
-
-module.exports = {
-    images: {
-      domains: ['tecdn.b-cdn.net'],
-    },
-  };
+module.exports = nextConfig;
