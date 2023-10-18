@@ -7,36 +7,36 @@ import { useRouter } from "next/navigation";
 const LoginPage = () => {
   const router = useRouter();
   interface Users {
-    email : string;
+    email: string;
     password: string;
   }
   const [userDetails, setUserDetails] = useState<Users>({
     email: "",
     password: "",
   });
-  const handleInputChange = (e:any) => {
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setUserDetails({
       ...userDetails,
       [name]: value,
     });
   };
-  const handleLogin = async (e:any)=>{
+  const handleLogin = async (e: any) => {
     // e.preventDefault();
-    const {email , password} = userDetails;
+    const { email, password } = userDetails;
     try {
-      if(!email || !password){
+      if (!email || !password) {
         toast.error("All fields are mandatory");
         return;
       }
-      const res = await axios.post("/api/users/login",{email, password});
+      const res = await axios.post("/api/users/login", { email, password });
       toast.success("User logged in successfully");
-      res && localStorage.setItem("userDetails",JSON.stringify(res.data.data));
+      res && localStorage.setItem("userDetails", JSON.stringify(res.data.data));
       router.push(`/profile/${res?.data?.data?._id}`);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
       <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">

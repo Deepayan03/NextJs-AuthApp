@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
     if (!user) {
       throw new AppError("User doesn't exist", 400);
     }
-
     const validPassword = bcryptjs.compare(password, user.password);
     if (!validPassword) {
       throw new AppError("Invalid password", 400);
